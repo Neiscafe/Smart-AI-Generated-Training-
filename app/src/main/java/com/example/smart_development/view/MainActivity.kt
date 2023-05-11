@@ -1,4 +1,4 @@
-package com.example.smart_development.ui.screens
+package com.example.smart_development.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
