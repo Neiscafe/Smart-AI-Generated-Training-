@@ -12,7 +12,8 @@ class App: Application() {
     }
 
     private fun configureDI() = startKoin {
-        androidContext(applicationContext)
+        applicationContext
+        androidContext(this@App)
         modules(appModules)
     }
 }
