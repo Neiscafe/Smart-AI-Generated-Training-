@@ -9,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 const val KEY = "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"
-const val URL = "https://api.openai.com/v1/completions/"
+const val URL = "https://api.openai.com/"
 
 class RetrofitInit {
     companion object {

@@ -1,5 +1,6 @@
 package com.example.smart_development.feature_training_session.presentation.new_training_session
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class NewTrainingSessionViewModel(
-    val createTraining: CreateTraining
+    private val createTraining: CreateTraining
 ) : ViewModel() {
 
     var training by mutableStateOf<TrainingSession?>(null)
@@ -24,24 +25,20 @@ class NewTrainingSessionViewModel(
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
-
-    init {
-
-    }
-
     fun onEvent(event: NewTrainingScreenEvent) {
         when (event) {
             is NewTrainingScreenEvent.PromptTextChanged -> {
                 prompt = event.text
+                Log.i("prompt", "onEvent: $prompt")
             }
 
             is NewTrainingScreenEvent.DoneButtonClicked -> {
                 viewModelScope.launch {
                     if(prompt.isNotBlank()){
                         sendUiEvent(UiEvent.ShowToast("Sucesso"))
+                        createTraining.invoke(prompt = prompt)
                         return@launch
                     }
-                    createTraining.invoke(prompt = prompt)
                 }
                 sendUiEvent(UiEvent.PopBackStack)
             }

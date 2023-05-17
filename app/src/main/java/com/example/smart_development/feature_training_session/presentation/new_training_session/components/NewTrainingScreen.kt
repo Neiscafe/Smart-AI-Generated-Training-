@@ -1,6 +1,7 @@
 package com.example.smart_development.feature_training_session.presentation.new_training_session.components
 
 import android.os.Process
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,7 +42,7 @@ fun NewTrainingScreen(
             when(event){
                 is UiEvent.PopBackStack -> onPopBackStack()
                 is UiEvent.ShowToast ->{
-//                    Toast.makeText(, event.message, Toast.LENGTH_SHORT).show()
+                    Log.i("NewTrainingScreen", "NewTrainingScreen: Sucesso!")
                 }
                 else->{}
             }
