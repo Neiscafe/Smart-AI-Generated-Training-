@@ -1,4 +1,4 @@
-package com.example.smart_development.feature_training_session.presentation.training_sessions
+package com.example.smart_development.feature_training_session.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

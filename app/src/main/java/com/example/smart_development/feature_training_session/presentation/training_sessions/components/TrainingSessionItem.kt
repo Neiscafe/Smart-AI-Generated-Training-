@@ -17,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smart_development.feature_training_session.domain.model.TrainingSession
 import com.example.smart_development.feature_training_session.domain.usecases.MainScreenEvent
-import com.example.smart_development.feature_training_session.presentation.training_sessions.samples.trainingSessionSample
 
 @Composable
 fun TrainingSessionItem(
@@ -44,10 +43,4 @@ fun TrainingSessionItem(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun TrainingSessionItemPreview() {
-    TrainingSessionItem(item = trainingSessionSample[1])
 }
