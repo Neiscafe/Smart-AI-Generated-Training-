@@ -7,7 +7,7 @@ import com.example.smart_development.feature_training_session.domain.model.Train
 import com.example.smart_development.feature_training_session.data.network.TrainingService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-
+const val ROLE = "user"
 class RepositoryImpl(
     private val remote: TrainingService,
 ) : Repository {
@@ -19,7 +19,7 @@ class RepositoryImpl(
     override suspend fun createTraining(prompt: String): TrainingSession {
         val promptModel = PromptModel(
             messages = listOf(
-                Message(content = prompt)
+                Message(content = prompt, role = ROLE)
             )
         )
         Log.i("RepositoryImpl", "createTraining: CreateTraining success")
