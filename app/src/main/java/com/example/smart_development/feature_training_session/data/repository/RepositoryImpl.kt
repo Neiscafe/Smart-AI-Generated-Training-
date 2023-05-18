@@ -3,12 +3,13 @@ package com.example.smart_development.feature_training_session.data.repository
 import android.util.Log
 import com.example.smart_development.feature_training_session.data.model.Message
 import com.example.smart_development.feature_training_session.data.model.PromptModel
-import com.example.smart_development.feature_training_session.data.model.TrainingResponse
-import com.example.smart_development.feature_training_session.domain.model.TrainingSession
 import com.example.smart_development.feature_training_session.data.network.TrainingService
+import com.example.smart_development.feature_training_session.domain.model.TrainingSession
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import retrofit2.HttpException
+import java.io.IOException
+
 const val TAG = "RepositoryImpl"
 const val ROLE = "user"
 class RepositoryImpl(
@@ -31,10 +32,12 @@ class RepositoryImpl(
             if(response.isSuccessful){
                 Log.i(TAG, "createTraining: response success = ${response.body()}")
             }else{
-                Log.i(TAG, "createTraining: response failure = $response")
+                Log.i(TAG, "createTraining: response failure = ${response.body()}")
             }
-        }catch(e: Exception){
-            Log.i(TAG, "createTraining: response failure = ${e.message}")
+        }catch(e: HttpException){
+            Log.i(TAG, "createTraining: response HTTPException = ${e.message}")
+        }catch(e: IOException){
+            Log.i(TAG, "createTraining: response IOException = ${e.message}")
         }
         return TrainingSession(title = "Title", type = "Type")
     }

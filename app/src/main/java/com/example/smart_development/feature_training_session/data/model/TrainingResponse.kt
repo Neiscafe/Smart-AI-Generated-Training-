@@ -2,6 +2,7 @@ package com.example.smart_development.feature_training_session.data.model
 
 import com.google.gson.annotations.SerializedName
 
+
 data class TrainingResponse(
     val id: String,
     val usage: Usage,
