@@ -3,10 +3,13 @@ package com.example.smart_development.feature_training_session.data.repository
 import android.util.Log
 import com.example.smart_development.feature_training_session.data.model.Message
 import com.example.smart_development.feature_training_session.data.model.PromptModel
+import com.example.smart_development.feature_training_session.data.model.TrainingResponse
 import com.example.smart_development.feature_training_session.domain.model.TrainingSession
 import com.example.smart_development.feature_training_session.data.network.TrainingService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import retrofit2.HttpException
+const val TAG = "RepositoryImpl"
 const val ROLE = "user"
 class RepositoryImpl(
     private val remote: TrainingService,
@@ -22,8 +25,18 @@ class RepositoryImpl(
                 Message(content = prompt, role = ROLE)
             )
         )
-        Log.i("RepositoryImpl", "createTraining: CreateTraining success")
-        return remote.createTraining(promptModel = promptModel)
+//        Log.i(TAG, "createTraining: CreateTraining success")
+        try{
+            val response = remote.createTraining(promptModel)
+            if(response.isSuccessful){
+                Log.i(TAG, "createTraining: response success = ${response.body()}")
+            }else{
+                Log.i(TAG, "createTraining: response failure = $response")
+            }
+        }catch(e: Exception){
+            Log.i(TAG, "createTraining: response failure = ${e.message}")
+        }
+        return TrainingSession(title = "Title", type = "Type")
     }
 }
 
