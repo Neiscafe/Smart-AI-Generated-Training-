@@ -39,8 +39,8 @@ class NewTrainingSessionViewModel(
                         createTraining.invoke(prompt = prompt)
                         return@launch
                     }
+                    sendUiEvent(UiEvent.PopBackStack)
                 }
-                sendUiEvent(UiEvent.PopBackStack)
             }
         }
     }

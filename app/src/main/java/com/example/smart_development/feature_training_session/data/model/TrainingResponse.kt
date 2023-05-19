@@ -23,3 +23,10 @@ data class Choice(
     val finishReason: String,
     val index: Int
 )
+
+data class Message(
+    @SerializedName("role")
+    val role: String,
+    @SerializedName("content")
+    val content: String,
+)

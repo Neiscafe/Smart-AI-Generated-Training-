@@ -3,6 +3,8 @@ package com.example.smart_development.feature_training_session.data.repository
 import android.util.Log
 import com.example.smart_development.feature_training_session.data.model.Message
 import com.example.smart_development.feature_training_session.data.model.PromptModel
+import com.example.smart_development.feature_training_session.data.model.TrainingResponse
+import com.example.smart_development.feature_training_session.data.model.WrapperResponse
 import com.example.smart_development.feature_training_session.data.network.TrainingService
 import com.example.smart_development.feature_training_session.domain.model.TrainingSession
 import kotlinx.coroutines.flow.Flow
@@ -26,13 +28,16 @@ class RepositoryImpl(
                 Message(content = prompt, role = ROLE)
             )
         )
+        val data: TrainingResponse
 //        Log.i(TAG, "createTraining: CreateTraining success")
         try{
             val response = remote.createTraining(promptModel)
             if(response.isSuccessful){
                 Log.i(TAG, "createTraining: response success = ${response.body()}")
+                WrapperResponse.Success(response.body())
             }else{
                 Log.i(TAG, "createTraining: response failure = ${response.body()}")
+                WrapperResponse.Failure(response.message())
             }
         }catch(e: HttpException){
             Log.i(TAG, "createTraining: response HTTPException = ${e.message}")

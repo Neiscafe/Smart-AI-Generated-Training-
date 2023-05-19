@@ -22,10 +22,12 @@ const val URL = "https://api.openai.com/"
 class RetrofitInit {
     companion object {
         fun create(context: Context?): TrainingService {
-            val gson = GsonBuilder().registerTypeAdapter(
+            val gson = GsonBuilder()
+                /*.registerTypeAdapter(
                 WrapperResponse::class.java,
                 WrapperResponseDeserializer()
-            ).create()
+            )*/
+                .create()
 
             val client = OkHttpClient.Builder().addInterceptor(Interceptor { chain ->
                 val newRequest =
@@ -41,6 +43,7 @@ class RetrofitInit {
         }
     }
 }
+/*
 
 class WrapperResponseDeserializer : JsonDeserializer<WrapperResponse> {
     override fun deserialize(
@@ -57,4 +60,4 @@ class WrapperResponseDeserializer : JsonDeserializer<WrapperResponse> {
         }
         return WrapperResponse(success, failure)
     }
-}
+}*/
