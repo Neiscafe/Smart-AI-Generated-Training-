@@ -2,10 +2,9 @@ package com.example.smart_development.feature_training_session.presentation.trai
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smart_development.feature_training_session.domain.model.TrainingSession
+import com.example.smart_development.feature_training_session.domain.model.Training
 import com.example.smart_development.feature_training_session.domain.repository.GetTraining
 import com.example.smart_development.feature_training_session.domain.usecases.MainScreenEvent
-import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import com.example.smart_development.feature_training_session.domain.util.Routes
 import kotlinx.coroutines.channels.Channel
@@ -20,7 +19,7 @@ class TrainingSessionsViewModel(
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
-    fun getAllTrainings(): Flow<List<TrainingSession>> {
+    fun getAllTrainings(): Flow<List<Training>> {
         return getTraining.invoke()
     }
 
