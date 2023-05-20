@@ -36,8 +36,7 @@ class NewTrainingSessionViewModel(
                 viewModelScope.launch {
                     if(prompt.isNotBlank()){
                         sendUiEvent(UiEvent.ShowToast("Sucesso"))
-                        createTraining.invoke(prompt = prompt)
-                        return@launch
+                        val newTraining = createTraining.invoke(prompt = prompt)
                     }
                     sendUiEvent(UiEvent.PopBackStack)
                 }

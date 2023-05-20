@@ -1,10 +1,8 @@
 package com.example.smart_development.feature_training_session.data.repository
 
-import android.util.Log
-import com.example.smart_development.feature_training_session.data.model.Message
-import com.example.smart_development.feature_training_session.data.model.PromptModel
 import com.example.smart_development.feature_training_session.data.model.TrainingResponse
-import com.example.smart_development.feature_training_session.data.model.WrapperResponse
+import com.example.smart_development.feature_training_session.data.model.NetworkResponse
+import com.example.smart_development.feature_training_session.domain.model.PromptModel
 import com.example.smart_development.feature_training_session.data.network.TrainingService
 import com.example.smart_development.feature_training_session.domain.model.TrainingSession
 import kotlinx.coroutines.flow.Flow
@@ -13,7 +11,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 const val TAG = "RepositoryImpl"
-const val ROLE = "user"
+
 class RepositoryImpl(
     private val remote: TrainingService,
 ) : Repository {
@@ -22,33 +20,23 @@ class RepositoryImpl(
         return emptyFlow()
     }
 
-    override suspend fun createTraining(prompt: String): TrainingSession {
-        val promptModel = PromptModel(
-            messages = listOf(
-                Message(content = prompt, role = ROLE)
-            )
-        )
-        val data: TrainingResponse
-//        Log.i(TAG, "createTraining: CreateTraining success")
-        try{
-            val response = remote.createTraining(promptModel)
-            if(response.isSuccessful){
-                Log.i(TAG, "createTraining: response success = ${response.body()}")
-                WrapperResponse.Success(response.body())
-            }else{
-                Log.i(TAG, "createTraining: response failure = ${response.body()}")
-                WrapperResponse.Failure(response.message())
+    override suspend fun createTraining(prompt: PromptModel): NetworkResponse<TrainingResponse> {
+        return try {
+            val response = remote.createTraining(prompt)
+            if (response.isSuccessful) {
+                NetworkResponse.Success(response.body()!!)
+            } else {
+                NetworkResponse.Failure(response.message())
             }
-        }catch(e: HttpException){
-            Log.i(TAG, "createTraining: response HTTPException = ${e.message}")
-        }catch(e: IOException){
-            Log.i(TAG, "createTraining: response IOException = ${e.message}")
+        } catch (e: HttpException) {
+            NetworkResponse.Failure(e.message())
+        } catch (e: IOException) {
+            NetworkResponse.Failure(e.message!!)
         }
-        return TrainingSession(title = "Title", type = "Type")
     }
 }
 
 interface Repository {
     fun getTraining(): Flow<List<TrainingSession>>
-    suspend fun createTraining(prompt: String): TrainingSession
+    suspend fun createTraining(prompt: PromptModel): NetworkResponse<TrainingResponse>
 }
