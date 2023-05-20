@@ -24,14 +24,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smart_development.feature_training_session.domain.model.TrainingSession
+import com.example.smart_development.feature_training_session.domain.model.Training
 import com.example.smart_development.feature_training_session.domain.usecases.MainScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import com.example.smart_development.feature_training_session.presentation.training_sessions.TrainingSessionsViewModel
-import com.example.smart_development.feature_training_session.presentation.training_sessions.components.TrainingSessionItem
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,12 +38,12 @@ fun MainScreen(
     onNavigate: (UiEvent.Navigate) -> Unit = {},
     viewModel: TrainingSessionsViewModel = koinViewModel(),
 ) {
-    val trainingSessions = viewModel.getAllTrainings().collectAsState(initial = emptyList<TrainingSession>())
+    val trainingSessions = viewModel.getAllTrainings().collectAsState(initial = emptyList<Training>())
     LaunchedEffect(key1 = true){
         viewModel.uiEvent.collect{event ->
             when (event){
                 is UiEvent.Navigate -> onNavigate(event)
-                else -> {}
+                else->{}
             }
         }
     }

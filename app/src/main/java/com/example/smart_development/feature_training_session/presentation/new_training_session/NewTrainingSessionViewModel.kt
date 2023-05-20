@@ -1,12 +1,11 @@
 package com.example.smart_development.feature_training_session.presentation.new_training_session
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smart_development.feature_training_session.domain.model.TrainingSession
+import com.example.smart_development.feature_training_session.domain.model.Training
 import com.example.smart_development.feature_training_session.domain.repository.CreateTraining
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
@@ -18,7 +17,7 @@ class NewTrainingSessionViewModel(
     private val createTraining: CreateTraining
 ) : ViewModel() {
 
-    var training by mutableStateOf<TrainingSession?>(null)
+    var training by mutableStateOf<Training?>(null)
         private set
     var prompt by mutableStateOf("")
         private set
@@ -29,14 +28,21 @@ class NewTrainingSessionViewModel(
         when (event) {
             is NewTrainingScreenEvent.PromptTextChanged -> {
                 prompt = event.text
-                Log.i("prompt", "onEvent: $prompt")
             }
 
             is NewTrainingScreenEvent.DoneButtonClicked -> {
                 viewModelScope.launch {
-                    if(prompt.isNotBlank()){
-                        sendUiEvent(UiEvent.ShowToast("Sucesso"))
-                        val newTraining = createTraining.invoke(prompt = prompt)
+                    if (prompt.isBlank()) {
+                        return@launch
+                    }
+                    val newTraining = createTraining.invoke(prompt = prompt)
+                    when (newTraining){
+                        is Training.TrainingSession->{
+                            sendUiEvent(UiEvent.ShowToast(message = "Sucesso na criação do treino!"))
+                        }
+                        is Training.TrainingError->{
+                            sendUiEvent(UiEvent.ShowToast(message = newTraining.message))
+                        }
                     }
                     sendUiEvent(UiEvent.PopBackStack)
                 }

@@ -12,15 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smart_development.feature_training_session.domain.model.TrainingSession
+import com.example.smart_development.feature_training_session.domain.model.Training
 import com.example.smart_development.feature_training_session.domain.usecases.MainScreenEvent
 
 @Composable
 fun TrainingSessionItem(
-    item: TrainingSession,
+    item: Training,
     onEvent: (MainScreenEvent) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -38,8 +37,8 @@ fun TrainingSessionItem(
             Column(
                 Modifier.padding(5.dp)
             ) {
-                Text(text = item.title, fontSize = 20.sp)
-                Text(text = item.type, fontSize = 16.sp)
+//                Text(text = item.title, fontSize = 20.sp)
+//                Text(text = item.type, fontSize = 16.sp)
             }
         }
     }
