@@ -11,6 +11,6 @@ class CreateTraining(
     suspend operator fun invoke(prompt: String): Training {
         val promptModel = prompt.toPromptModel()
         val response = repository.createTraining(prompt = promptModel)
-        return TrainingResponseToModel(response).execute()
+        return TrainingResponseToModel().execute(response)
     }
 }

@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 const val MODEL = "gpt-3.5-turbo-0301"
 const val ROLE_USER = "user"
+
 data class PromptModel(
     @SerializedName("model")
     val model: String = MODEL,

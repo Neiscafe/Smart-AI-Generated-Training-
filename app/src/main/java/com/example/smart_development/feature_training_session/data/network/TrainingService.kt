@@ -1,5 +1,7 @@
 package com.example.smart_development.feature_training_session.data.network
 
+import com.example.smart_development.feature_training_session.data.model.ErrorResponse
+import com.example.smart_development.feature_training_session.data.model.NetworkResponse
 import com.example.smart_development.feature_training_session.data.model.TrainingResponse
 import com.example.smart_development.feature_training_session.domain.model.PromptModel
 import com.example.smart_development.feature_training_session.domain.model.Training

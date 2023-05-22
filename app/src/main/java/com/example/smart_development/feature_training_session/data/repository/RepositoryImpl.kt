@@ -7,8 +7,6 @@ import com.example.smart_development.feature_training_session.domain.model.Promp
 import com.example.smart_development.feature_training_session.domain.model.Training
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import retrofit2.HttpException
-import java.io.IOException
 
 const val TAG = "RepositoryImpl"
 
@@ -16,23 +14,11 @@ class RepositoryImpl(
     private val remote: TrainingService,
 ) : Repository {
     override fun getTraining(): Flow<List<Training>> {
-//        return remote.getTraining()
         return emptyFlow()
     }
 
     override suspend fun createTraining(prompt: PromptModel): NetworkResponse<TrainingResponse> {
-        return try {
-            val response = remote.createTraining(prompt)
-            if (response.isSuccessful) {
-                NetworkResponse.Success(response.body()!!)
-            } else {
-                NetworkResponse.Failure(response.message())
-            }
-        } catch (e: HttpException) {
-            NetworkResponse.Failure(e.message())
-        } catch (e: IOException) {
-            NetworkResponse.Failure(e.message!!)
-        }
+        return HandleNetworkResponse().execute(remote.createTraining(promptModel = prompt))
     }
 }
 
