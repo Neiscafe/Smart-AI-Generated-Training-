@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.smart_development.feature_training_session.domain.model.Training
 import com.example.smart_development.feature_training_session.domain.repository.CreateTraining
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
+import com.example.smart_development.feature_training_session.domain.usecases.TypeRadioButtonState
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -22,8 +23,14 @@ class NewTrainingSessionViewModel(
     var prompt by mutableStateOf("")
         private set
 
+    var homeRadioButtonSelected by mutableStateOf(false)
+        private set
+    var gymRadioButtonSelected by mutableStateOf(false)
+        private set
+
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
+
     fun onEvent(event: NewTrainingScreenEvent) {
         when (event) {
             is NewTrainingScreenEvent.PromptTextChanged -> {
@@ -36,24 +43,35 @@ class NewTrainingSessionViewModel(
                         return@launch
                     }
                     val newTraining = createTraining.invoke(prompt = prompt)
-                    when (newTraining){
-                        is Training.TrainingSession->{
+                    when (newTraining) {
+                        is Training.TrainingSession -> {
                             sendUiEvent(UiEvent.ShowToast(message = "Sucesso na criação do treino!"))
                         }
-                        is Training.TrainingError->{
+
+                        is Training.TrainingError -> {
                             sendUiEvent(UiEvent.ShowToast(message = newTraining.message))
                         }
                     }
                     sendUiEvent(UiEvent.PopBackStack)
                 }
             }
+
+            is NewTrainingScreenEvent.RadioButtonClicked -> {
+                if (event.button == TypeRadioButtonState.GYM_SELECTED) {
+                    homeRadioButtonSelected = false
+                    gymRadioButtonSelected = true
+                } else {
+                    homeRadioButtonSelected = true
+                    gymRadioButtonSelected = false
+                }
+            }
         }
     }
+
 
     private fun sendUiEvent(event: UiEvent) {
         viewModelScope.launch {
             _uiEvent.send(event)
         }
     }
-
 }
