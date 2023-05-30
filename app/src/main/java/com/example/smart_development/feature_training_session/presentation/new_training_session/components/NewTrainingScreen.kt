@@ -13,6 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.smart_development.R
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import com.example.smart_development.feature_training_session.presentation.new_training_session.NewTrainingSessionViewModel
@@ -37,23 +39,39 @@ fun NewTrainingScreen(
     }
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    viewModel.onEvent(NewTrainingScreenEvent.DoneButtonClicked)
-                }
-            ) {
+            FloatingActionButton(onClick = {
+                viewModel.onEvent(NewTrainingScreenEvent.DoneButtonClicked)
+            }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
                 )
             }
-        }
+        },
     ) {
         Box(Modifier.padding(it)) {
-            Column {
-                TrainingTab(trainingType = TrainingType(type = Types.strenght, description = Descriptions.strength))
-                TrainingTab(trainingType = TrainingType(type = Types.resistance, description = Descriptions.resistance))
-                TrainingTab(trainingType = TrainingType(type = Types.hypertrophy, description = Descriptions.hypertrophy))
+            Column(Modifier.padding(10.dp)) {
+                TrainingTab(
+                    trainingType = TrainingType(
+                        type = Types.strenght,
+                        description = Descriptions.strength,
+                        image = R.drawable.strength_training_image
+                    )
+                )
+                TrainingTab(
+                    trainingType = TrainingType(
+                        type = Types.resistance,
+                        description = Descriptions.resistance,
+                        image = R.drawable.resistance_training_image
+                    )
+                )
+                TrainingTab(
+                    trainingType = TrainingType(
+                        type = Types.hypertrophy,
+                        description = Descriptions.hypertrophy,
+                        image = R.drawable.hypertrophy_training_image
+                    )
+                )
             }
         }
     }
