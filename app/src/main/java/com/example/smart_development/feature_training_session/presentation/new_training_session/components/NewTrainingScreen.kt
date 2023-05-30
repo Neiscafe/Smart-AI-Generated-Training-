@@ -2,7 +2,6 @@ package com.example.smart_development.feature_training_session.presentation.new_
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -10,12 +9,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import com.example.smart_development.common.createToast
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import com.example.smart_development.feature_training_session.presentation.new_training_session.NewTrainingSessionViewModel
@@ -26,8 +23,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NewTrainingScreen(
     viewModel: NewTrainingSessionViewModel = koinViewModel(),
-    onPopBackStack: () -> Unit,
-    onCreateToast: (String) -> Unit
+    onPopBackStack: () -> Unit = {},
+    onCreateToast: (String) -> Unit = {}
 ) {
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -54,14 +51,24 @@ fun NewTrainingScreen(
     ) {
         Box(Modifier.padding(it)) {
             Column {
-                TextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = viewModel.prompt,
-                    onValueChange = { newText ->
-                        viewModel.onEvent(NewTrainingScreenEvent.PromptTextChanged(newText))
-                    }
-                )
+                TrainingTab(trainingType = TrainingType(type = Types.strenght, description = Descriptions.strength))
+                TrainingTab(trainingType = TrainingType(type = Types.resistance, description = Descriptions.resistance))
+                TrainingTab(trainingType = TrainingType(type = Types.hypertrophy, description = Descriptions.hypertrophy))
             }
         }
     }
 }
+
+@Preview
+@Composable
+fun NewTrainingScreenPreview() {
+    NewTrainingScreen()
+}
+
+//TextField(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    value = viewModel.prompt,
+//                    onValueChange = { newText ->
+//                        viewModel.onEvent(NewTrainingScreenEvent.PromptTextChanged(newText))
+//                    }
+//                )
