@@ -52,14 +52,11 @@ fun TrainingTab(trainingType: TrainingType) {
         ) {
             Image(
                 painter = painterResource(id = trainingType.image),
-                contentDescription = "hypertrophy",
+                contentDescription = "",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.blur(
-                    radiusX = 1.dp, radiusY = 10.dp, edgeTreatment = BlurredEdgeTreatment(
-                        RoundedCornerShape(10.dp)
-                    )
+                    4.dp
                 )
-//                colorFilter = ColorFilter.colorMatrix(ColorMatrix().apply { setToSaturation(0f) })
             )
             Column(
                 Modifier
