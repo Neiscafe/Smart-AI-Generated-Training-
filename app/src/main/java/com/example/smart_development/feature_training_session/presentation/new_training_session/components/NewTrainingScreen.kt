@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -19,7 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.smart_development.R
+import com.example.smart_development.common.values.new_training.trainingTabItems
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.TypeRadioButtonState
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
@@ -34,21 +37,6 @@ fun NewTrainingScreen(
     onPopBackStack: () -> Unit = {},
     onCreateToast: (String) -> Unit = {}
 ) {
-    val tabItems = listOf(
-        TrainingType(
-            type = Types.strenght,
-            description = Descriptions.strength,
-            image = R.drawable.strength_training_image
-        ), TrainingType(
-            type = Types.resistance,
-            description = Descriptions.resistance,
-            image = R.drawable.resistance_training_image
-        ), TrainingType(
-            type = Types.hypertrophy,
-            description = Descriptions.hypertrophy,
-            image = R.drawable.hypertrophy_training_image
-        )
-    )
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -73,27 +61,51 @@ fun NewTrainingScreen(
         },
     ) {
         Box(Modifier.padding(it)) {
-            Column(Modifier.padding(10.dp)) {
-                tabItems.forEach { trainingType ->
-                    TrainingTab(trainingType = trainingType)
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp), verticalArrangement = Arrangement.Center
+            ) {
+                trainingTabItems.forEach { trainingType ->
+                    TrainingTab(trainingStyle = trainingType)
                 }
                 Row(
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    RadioButton(selected = viewModel.homeRadioButtonSelected, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.RadioButtonClicked(TypeRadioButtonState.HOME_SELECTED)
-                        )
-                    })
-                    Text(text = "Home", modifier = Modifier)
-                    RadioButton(selected = viewModel.gymRadioButtonSelected, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.RadioButtonClicked(TypeRadioButtonState.GYM_SELECTED)
-                        )
-                    })
-                    Text(text = "Gym", modifier = Modifier)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = viewModel.homeRadioButtonState, onClick = {
+                            viewModel.onEvent(
+                                NewTrainingScreenEvent.RadioButtonClicked(TypeRadioButtonState.HOME_SELECTED)
+                            )
+                        })
+                        Text(text = "Home", modifier = Modifier)
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = viewModel.gymRadioButtonState, onClick = {
+                            viewModel.onEvent(
+                                NewTrainingScreenEvent.RadioButtonClicked(TypeRadioButtonState.GYM_SELECTED)
+                            )
+                        })
+                        Text(text = "Gym", modifier = Modifier)
+                    }
                 }
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Picker(
+                        list = (1..7).toList(),
+                        onValueChange = {},
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(30.dp),
+                        showAmount = 4
+                    )
+                    PickerRect(
+                        modifier = Modifier
+                            .height(50.dp)
+                            .width(50.dp)
+                    )
+                }
+                Text(text = "I will be training X days a week", modifier = Modifier.fillMaxWidth())
             }
         }
     }

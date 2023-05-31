@@ -18,14 +18,15 @@ class NewTrainingSessionViewModel(
     private val createTraining: CreateTraining
 ) : ViewModel() {
 
-    var training by mutableStateOf<Training?>(null)
+    var trainingState by mutableStateOf<Training?>(null)
         private set
-    var prompt by mutableStateOf("")
+    var promptState by mutableStateOf("")
         private set
-
-    var homeRadioButtonSelected by mutableStateOf(false)
+    var homeRadioButtonState by mutableStateOf(false)
         private set
-    var gymRadioButtonSelected by mutableStateOf(false)
+    var gymRadioButtonState by mutableStateOf(false)
+        private set
+    var pickerState by mutableStateOf(1)
         private set
 
     private val _uiEvent = Channel<UiEvent>()
@@ -34,15 +35,15 @@ class NewTrainingSessionViewModel(
     fun onEvent(event: NewTrainingScreenEvent) {
         when (event) {
             is NewTrainingScreenEvent.PromptTextChanged -> {
-                prompt = event.text
+                promptState = event.text
             }
 
             is NewTrainingScreenEvent.DoneButtonClicked -> {
                 viewModelScope.launch {
-                    if (prompt.isBlank()) {
+                    if (promptState.isBlank()) {
                         return@launch
                     }
-                    val newTraining = createTraining.invoke(prompt = prompt)
+                    val newTraining = createTraining.invoke(prompt = promptState)
                     when (newTraining) {
                         is Training.TrainingSession -> {
                             sendUiEvent(UiEvent.ShowToast(message = "Sucesso na criação do treino!"))
@@ -58,11 +59,11 @@ class NewTrainingSessionViewModel(
 
             is NewTrainingScreenEvent.RadioButtonClicked -> {
                 if (event.button == TypeRadioButtonState.GYM_SELECTED) {
-                    homeRadioButtonSelected = false
-                    gymRadioButtonSelected = true
+                    homeRadioButtonState = false
+                    gymRadioButtonState = true
                 } else {
-                    homeRadioButtonSelected = true
-                    gymRadioButtonSelected = false
+                    homeRadioButtonState = true
+                    gymRadioButtonState = false
                 }
             }
         }
