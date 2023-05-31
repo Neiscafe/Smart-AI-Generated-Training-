@@ -67,11 +67,15 @@ fun NewTrainingScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(10.dp), verticalArrangement = Arrangement.Center
+                    .padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                trainingTabItems.forEach { trainingType ->
-                    TrainingTab(trainingStyle = trainingType)
+                Text(text = "Why are you training?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Column {
+                    trainingTabItems.forEach { trainingType ->
+                        TrainingTab(trainingStyle = trainingType)
+                    }
                 }
+                Text(text = "Where will you be training?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -93,13 +97,14 @@ fun NewTrainingScreen(
                         Text(text = "Gym", modifier = Modifier)
                     }
                 }
+                Text(text = "How many times per week you will exercise?", modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), textAlign = TextAlign.Center)
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Picker(
                         list = (1..7).toList(), onValueChange = { number ->
                             viewModel.onEvent(NewTrainingScreenEvent.PickerTextChanged(number))
                         }, modifier = Modifier
                             .fillMaxWidth()
-                            .height(30.dp), showAmount = 4
+                            .height(30.dp), showAmount = 4,
                     )
                     PickerRect(
                         modifier = Modifier
@@ -107,9 +112,8 @@ fun NewTrainingScreen(
                             .width(50.dp)
                     )
                 }
-                Spacer(modifier = Modifier.height(20.dp))
                 Text(
-                    text = "I will be training ${viewModel.pickerState} days a week",
+                    text = "${viewModel.pickerState} days a week",
                     modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
                 )
             }
