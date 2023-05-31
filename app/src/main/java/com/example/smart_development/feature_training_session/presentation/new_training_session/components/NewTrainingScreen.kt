@@ -4,9 +4,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.smart_development.common.values.new_training.trainingTabItems
@@ -76,7 +79,7 @@ fun NewTrainingScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(selected = viewModel.homeRadioButtonState, onClick = {
                             viewModel.onEvent(
-                                NewTrainingScreenEvent.RadioButtonClicked(TypeRadioButtonState.HOME_SELECTED)
+                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.HOME_SELECTED)
                             )
                         })
                         Text(text = "Home", modifier = Modifier)
@@ -84,7 +87,7 @@ fun NewTrainingScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         RadioButton(selected = viewModel.gymRadioButtonState, onClick = {
                             viewModel.onEvent(
-                                NewTrainingScreenEvent.RadioButtonClicked(TypeRadioButtonState.GYM_SELECTED)
+                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.GYM_SELECTED)
                             )
                         })
                         Text(text = "Gym", modifier = Modifier)
@@ -92,12 +95,11 @@ fun NewTrainingScreen(
                 }
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Picker(
-                        list = (1..7).toList(),
-                        onValueChange = {},
-                        modifier = Modifier
+                        list = (1..7).toList(), onValueChange = { number ->
+                            viewModel.onEvent(NewTrainingScreenEvent.PickerTextChanged(number))
+                        }, modifier = Modifier
                             .fillMaxWidth()
-                            .height(30.dp),
-                        showAmount = 4
+                            .height(30.dp), showAmount = 4
                     )
                     PickerRect(
                         modifier = Modifier
@@ -105,7 +107,11 @@ fun NewTrainingScreen(
                             .width(50.dp)
                     )
                 }
-                Text(text = "I will be training X days a week", modifier = Modifier.fillMaxWidth())
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "I will be training ${viewModel.pickerState} days a week",
+                    modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
+                )
             }
         }
     }

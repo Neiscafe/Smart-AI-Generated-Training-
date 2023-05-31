@@ -63,7 +63,7 @@ fun <T> Picker(
                 if (rest < 0) {
                     currentDragX + abs(rest) - spacePerItem
                 } else {
-                    currentDragX - (rest) + spacePerItem
+                    currentDragX - rest + spacePerItem
                 }
             } else {
                 if (rest < 0) {

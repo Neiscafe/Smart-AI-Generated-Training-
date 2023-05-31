@@ -26,7 +26,7 @@ class NewTrainingSessionViewModel(
         private set
     var gymRadioButtonState by mutableStateOf(false)
         private set
-    var pickerState by mutableStateOf(1)
+    var pickerState by mutableStateOf(4)
         private set
 
     private val _uiEvent = Channel<UiEvent>()
@@ -57,7 +57,7 @@ class NewTrainingSessionViewModel(
                 }
             }
 
-            is NewTrainingScreenEvent.RadioButtonClicked -> {
+            is NewTrainingScreenEvent.RadioButtonPressed -> {
                 if (event.button == TypeRadioButtonState.GYM_SELECTED) {
                     homeRadioButtonState = false
                     gymRadioButtonState = true
@@ -65,6 +65,10 @@ class NewTrainingSessionViewModel(
                     homeRadioButtonState = true
                     gymRadioButtonState = false
                 }
+            }
+
+            is NewTrainingScreenEvent.PickerTextChanged->{
+                pickerState = event.days
             }
         }
     }
