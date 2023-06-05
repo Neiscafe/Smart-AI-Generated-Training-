@@ -26,7 +26,7 @@ class NewTrainingSessionViewModel(
         private set
     var gymRadioButtonState by mutableStateOf(false)
         private set
-    var pickerState by mutableStateOf(4)
+    var pickerState by mutableStateOf(4f)
         private set
 
     private val _uiEvent = Channel<UiEvent>()

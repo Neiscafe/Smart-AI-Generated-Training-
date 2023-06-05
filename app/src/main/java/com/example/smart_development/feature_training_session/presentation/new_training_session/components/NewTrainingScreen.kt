@@ -17,6 +17,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -67,15 +68,26 @@ fun NewTrainingScreen(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(10.dp), verticalArrangement = Arrangement.spacedBy(10.dp),
+                    .padding(10.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Text(text = "Why are you training?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Text(
+                    text = "Why are you training?",
+                    Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
                 Column {
                     trainingTabItems.forEach { trainingType ->
-                        TrainingTab(trainingStyle = trainingType)
+                        TrainingTab(trainingStyle = trainingType, onClick = {
+                            //call view model
+                        })
                     }
                 }
-                Text(text = "Where will you be training?", Modifier.fillMaxWidth(), textAlign = TextAlign.Center)
+                Text(
+                    text = "Where will you be training?",
+                    Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -97,24 +109,22 @@ fun NewTrainingScreen(
                         Text(text = "Gym", modifier = Modifier)
                     }
                 }
-                Text(text = "How many times per week you will exercise?", modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), textAlign = TextAlign.Center)
-                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Picker(
-                        list = (1..7).toList(), onValueChange = { number ->
-                            viewModel.onEvent(NewTrainingScreenEvent.PickerTextChanged(number))
-                        }, modifier = Modifier
-                            .fillMaxWidth()
-                            .height(30.dp), showAmount = 4,
-                    )
-                    PickerRect(
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(50.dp)
-                    )
-                }
                 Text(
-                    text = "${viewModel.pickerState} days a week",
-                    modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
+                    text = "How many times per week you will exercise?",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    textAlign = TextAlign.Center
+                )
+                Slider(value = viewModel.pickerState, onValueChange = { newValue ->
+                    viewModel.onEvent(
+                        NewTrainingScreenEvent.PickerTextChanged(newValue)
+                    )
+                }, valueRange = 1f..7f, steps = 5)
+                Text(
+                    text = "${viewModel.pickerState.toInt()} days a week",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
             }
         }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -29,16 +30,16 @@ import com.example.smart_development.feature_training_session.domain.model.train
 import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingStyle
 import com.example.smart_development.feature_training_session.domain.model.training_types.Types
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrainingTab(trainingStyle: TrainingStyle) {
+fun TrainingTab(trainingStyle: TrainingStyle, onClick: ()->Unit = {}) {
 
     val brush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
 
     Card(
         modifier = Modifier.fillMaxWidth(), border = BorderStroke(
             width = 3.dp, color = Color.Black
-        ), shape = RoundedCornerShape(30.dp)
-
+        ), shape = RoundedCornerShape(30.dp), onClick = {  }
     ) {
         Box(
             modifier = Modifier
