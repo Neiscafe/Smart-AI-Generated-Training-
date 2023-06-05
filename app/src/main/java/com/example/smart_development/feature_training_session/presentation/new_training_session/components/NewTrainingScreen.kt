@@ -4,12 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.smart_development.common.values.new_training.trainingTabItems
+import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingType
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.TypeRadioButtonState
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
@@ -41,6 +37,9 @@ fun NewTrainingScreen(
     onPopBackStack: () -> Unit = {},
     onCreateToast: (String) -> Unit = {}
 ) {
+
+    val trainingTypes =
+        listOf(TrainingType.STRENGTH, TrainingType.HYPERTROPHY, TrainingType.RESISTANCE)
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -76,60 +75,63 @@ fun NewTrainingScreen(
                     Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-                Column {
-                    trainingTabItems.forEach { trainingType ->
-                        TrainingTab(trainingStyle = trainingType, onClick = {
-                            //call view model
-                        })
-                    }
-                }
-                Text(
-                    text = "Where will you be training?",
-                    Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(selected = viewModel.homeRadioButtonState, onClick = {
-                            viewModel.onEvent(
-                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.HOME_SELECTED)
+                for (type in trainingTypes) {
+                    TrainingTab(trainingType = type, onClick = {
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.TrainingTypeClicked(
+                                type
                             )
-                        })
-                        Text(text = "Home", modifier = Modifier)
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(selected = viewModel.gymRadioButtonState, onClick = {
-                            viewModel.onEvent(
-                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.GYM_SELECTED)
-                            )
-                        })
-                        Text(text = "Gym", modifier = Modifier)
-                    }
+                        )
+                    })
                 }
-                Text(
-                    text = "How many times per week you will exercise?",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    textAlign = TextAlign.Center
-                )
-                Slider(value = viewModel.pickerState, onValueChange = { newValue ->
-                    viewModel.onEvent(
-                        NewTrainingScreenEvent.PickerTextChanged(newValue)
-                    )
-                }, valueRange = 1f..7f, steps = 5)
-                Text(
-                    text = "${viewModel.pickerState.toInt()} days a week",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
             }
+
+            Text(
+                text = "Where will you be training?",
+                Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(selected = viewModel.homeRadioButtonSelectedState, onClick = {
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.HOME_SELECTED)
+                        )
+                    })
+                    Text(text = "Home", modifier = Modifier)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    RadioButton(selected = viewModel.gymRadioButtonSelectedState, onClick = {
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.GYM_SELECTED)
+                        )
+                    })
+                    Text(text = "Gym", modifier = Modifier)
+                }
+            }
+            Text(
+                text = "How many times per week you will exercise?",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp),
+                textAlign = TextAlign.Center
+            )
+            Slider(value = viewModel.pickerState, onValueChange = { newValue ->
+                viewModel.onEvent(
+                    NewTrainingScreenEvent.PickerTextChanged(newValue)
+                )
+            }, valueRange = 1f..7f, steps = 5)
+            Text(
+                text = "${viewModel.pickerState.toInt()} days a week",
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
+
 
 @Preview
 @Composable

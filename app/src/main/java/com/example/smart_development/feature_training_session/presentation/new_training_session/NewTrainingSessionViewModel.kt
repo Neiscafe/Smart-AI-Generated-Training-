@@ -22,11 +22,13 @@ class NewTrainingSessionViewModel(
         private set
     var promptState by mutableStateOf("")
         private set
-    var homeRadioButtonState by mutableStateOf(false)
+    var homeRadioButtonSelectedState by mutableStateOf(false)
         private set
-    var gymRadioButtonState by mutableStateOf(false)
+    var gymRadioButtonSelectedState by mutableStateOf(true)
         private set
     var pickerState by mutableStateOf(4f)
+        private set
+    var trainingTypeSelectedState by mutableStateOf(0)
         private set
 
     private val _uiEvent = Channel<UiEvent>()
@@ -59,16 +61,28 @@ class NewTrainingSessionViewModel(
 
             is NewTrainingScreenEvent.RadioButtonPressed -> {
                 if (event.button == TypeRadioButtonState.GYM_SELECTED) {
-                    homeRadioButtonState = false
-                    gymRadioButtonState = true
+                    homeRadioButtonSelectedState = false
+                    gymRadioButtonSelectedState = true
                 } else {
-                    homeRadioButtonState = true
-                    gymRadioButtonState = false
+                    homeRadioButtonSelectedState = true
+                    gymRadioButtonSelectedState = false
                 }
             }
 
-            is NewTrainingScreenEvent.PickerTextChanged->{
+            is NewTrainingScreenEvent.PickerTextChanged -> {
                 pickerState = event.days
+            }
+
+            is NewTrainingScreenEvent.TrainingTypeClicked -> {
+                if (event.trainingType.name == "STRENGTH") {
+                    trainingTypeSelectedState = 1
+                }
+                if (event.trainingType.name == "RESISTANCE") {
+                    trainingTypeSelectedState = 2
+                }
+                if (event.trainingType.name == "HYPERTROPHY") {
+                    trainingTypeSelectedState = 3
+                }
             }
         }
     }

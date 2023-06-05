@@ -25,22 +25,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smart_development.R
-import com.example.smart_development.feature_training_session.domain.model.training_types.Descriptions
-import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingStyle
-import com.example.smart_development.feature_training_session.domain.model.training_types.Types
-
+import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingType
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrainingTab(trainingStyle: TrainingStyle, onClick: ()->Unit = {}) {
-
+fun TrainingTab(trainingType: TrainingType, onClick: () -> Unit = {}) {
     val brush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
 
-    Card(
-        modifier = Modifier.fillMaxWidth(), border = BorderStroke(
-            width = 3.dp, color = Color.Black
-        ), shape = RoundedCornerShape(30.dp), onClick = {  }
-    ) {
+    Card(modifier = Modifier.fillMaxWidth(), border = BorderStroke(
+        width = 3.dp, color = Color.Black
+    ), shape = RoundedCornerShape(30.dp), onClick = { onClick() }) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -48,7 +41,7 @@ fun TrainingTab(trainingStyle: TrainingStyle, onClick: ()->Unit = {}) {
                 .background(Color.Gray)
         ) {
             Image(
-                painter = painterResource(id = trainingStyle.image),
+                painter = painterResource(id = trainingType.image),
                 contentDescription = "",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.blur(
@@ -63,7 +56,7 @@ fun TrainingTab(trainingStyle: TrainingStyle, onClick: ()->Unit = {}) {
                 Text(
                     fontSize = 24.sp,
                     fontWeight = FontWeight(600),
-                    text = trainingStyle.type,
+                    text = trainingType.type,
                     color = Color.White
                 )
 //                Text(
@@ -78,11 +71,5 @@ fun TrainingTab(trainingStyle: TrainingStyle, onClick: ()->Unit = {}) {
 @Preview(showBackground = true)
 @Composable
 fun TrainingTabPreview() {
-    TrainingTab(
-        TrainingStyle(
-            type = Types.hypertrophy,
-            description = Descriptions.hypertrophy,
-            image = R.drawable.resistance_training_image
-        )
-    )
+    TrainingTab(trainingType = TrainingType.HYPERTROPHY)
 }
