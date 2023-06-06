@@ -26,14 +26,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingType
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrainingTab(trainingType: TrainingType, onClick: () -> Unit = {}) {
+fun TrainingTab(
+    trainingType: TrainingType, onClick: () -> Unit, onValueChange: () -> Boolean
+) {
     val brush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
 
-    Card(modifier = Modifier.fillMaxWidth(), border = BorderStroke(
+    var cardModifier = Modifier.fillMaxWidth()
+
+    cardModifier = if (onValueChange()) {
+        Modifier
+            .fillMaxWidth()
+            .background(color = Color.Gray)
+    } else {
+        Modifier.fillMaxWidth()
+    }
+
+    Card(modifier = cardModifier, border = BorderStroke(
         width = 3.dp, color = Color.Black
-    ), shape = RoundedCornerShape(30.dp), onClick = { onClick() }) {
+    ), shape = RoundedCornerShape(30.dp), onClick = {
+        onClick()
+    }) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -66,10 +81,4 @@ fun TrainingTab(trainingType: TrainingType, onClick: () -> Unit = {}) {
         }
     }
     Spacer(modifier = Modifier.size(5.dp))
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TrainingTabPreview() {
-    TrainingTab(trainingType = TrainingType.HYPERTROPHY)
 }

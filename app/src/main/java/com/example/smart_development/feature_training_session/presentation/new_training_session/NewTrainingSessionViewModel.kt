@@ -14,6 +14,10 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
+const val STRENGTH = "STRENGTH"
+const val RESISTANCE = "RESISTANCE"
+const val HYPERTROPHY = "HYPERTROPHY"
+
 class NewTrainingSessionViewModel(
     private val createTraining: CreateTraining
 ) : ViewModel() {
@@ -28,7 +32,11 @@ class NewTrainingSessionViewModel(
         private set
     var pickerState by mutableStateOf(4f)
         private set
-    var trainingTypeSelectedState by mutableStateOf(0)
+    var strengthTrainingSelectedState by mutableStateOf(false)
+        private set
+    var resistanceTrainingSelectedState by mutableStateOf(false)
+        private set
+    var hypertrophyTrainingSelectedState by mutableStateOf(false)
         private set
 
     private val _uiEvent = Channel<UiEvent>()
@@ -75,18 +83,23 @@ class NewTrainingSessionViewModel(
 
             is NewTrainingScreenEvent.TrainingTypeClicked -> {
                 if (event.trainingType.name == "STRENGTH") {
-                    trainingTypeSelectedState = 1
+                    strengthTrainingSelectedState = true
+                    resistanceTrainingSelectedState = false
+                    hypertrophyTrainingSelectedState = false
                 }
                 if (event.trainingType.name == "RESISTANCE") {
-                    trainingTypeSelectedState = 2
+                    resistanceTrainingSelectedState = true
+                    strengthTrainingSelectedState = false
+                    hypertrophyTrainingSelectedState = false
                 }
                 if (event.trainingType.name == "HYPERTROPHY") {
-                    trainingTypeSelectedState = 3
+                    hypertrophyTrainingSelectedState = true
+                    resistanceTrainingSelectedState = false
+                    strengthTrainingSelectedState = false
                 }
             }
         }
     }
-
 
     private fun sendUiEvent(event: UiEvent) {
         viewModelScope.launch {

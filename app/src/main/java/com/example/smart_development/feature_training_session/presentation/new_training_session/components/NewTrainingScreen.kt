@@ -38,9 +38,6 @@ fun NewTrainingScreen(
     onCreateToast: (String) -> Unit = {}
 ) {
 
-    val trainingTypes =
-        listOf(TrainingType.STRENGTH, TrainingType.HYPERTROPHY, TrainingType.RESISTANCE)
-
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
             when (event) {
@@ -75,59 +72,69 @@ fun NewTrainingScreen(
                     Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-                for (type in trainingTypes) {
-                    TrainingTab(trainingType = type, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.TrainingTypeClicked(
-                                type
-                            )
+                TrainingTab(trainingType = TrainingType.STRENGTH, onClick = {
+                    viewModel.onEvent(
+                        NewTrainingScreenEvent.TrainingTypeClicked(
+                            TrainingType.STRENGTH
                         )
-                    })
-                }
-            }
-
-            Text(
-                text = "Where will you be training?",
-                Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(selected = viewModel.homeRadioButtonSelectedState, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.HOME_SELECTED)
+                    )
+                }, onValueChange = { viewModel.strengthTrainingSelectedState })
+                TrainingTab(trainingType = TrainingType.HYPERTROPHY, onClick = {
+                    viewModel.onEvent(
+                        NewTrainingScreenEvent.TrainingTypeClicked(TrainingType.HYPERTROPHY)
+                    )
+                }, onValueChange = { viewModel.hypertrophyTrainingSelectedState })
+                TrainingTab(trainingType = TrainingType.RESISTANCE, onClick = {
+                    viewModel.onEvent(
+                        NewTrainingScreenEvent.TrainingTypeClicked(
+                            TrainingType.RESISTANCE
                         )
-                    })
-                    Text(text = "Home", modifier = Modifier)
-                }
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    RadioButton(selected = viewModel.gymRadioButtonSelectedState, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.GYM_SELECTED)
-                        )
-                    })
-                    Text(text = "Gym", modifier = Modifier)
-                }
-            }
-            Text(
-                text = "How many times per week you will exercise?",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                textAlign = TextAlign.Center
-            )
-            Slider(value = viewModel.pickerState, onValueChange = { newValue ->
-                viewModel.onEvent(
-                    NewTrainingScreenEvent.PickerTextChanged(newValue)
+                    )
+                }, onValueChange = { viewModel.resistanceTrainingSelectedState })
+                Text(
+                    text = "Where will you be training?",
+                    Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
-            }, valueRange = 1f..7f, steps = 5)
-            Text(
-                text = "${viewModel.pickerState.toInt()} days a week",
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
-            )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = viewModel.homeRadioButtonSelectedState, onClick = {
+                            viewModel.onEvent(
+                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.HOME_SELECTED)
+                            )
+                        })
+                        Text(text = "Home", modifier = Modifier)
+                    }
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        RadioButton(selected = viewModel.gymRadioButtonSelectedState, onClick = {
+                            viewModel.onEvent(
+                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.GYM_SELECTED)
+                            )
+                        })
+                        Text(text = "Gym", modifier = Modifier)
+                    }
+                }
+                Text(
+                    text = "How many times per week you will exercise?",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    textAlign = TextAlign.Center
+                )
+                Slider(value = viewModel.pickerState, onValueChange = { newValue ->
+                    viewModel.onEvent(
+                        NewTrainingScreenEvent.PickerTextChanged(newValue)
+                    )
+                }, valueRange = 1f..7f, steps = 5)
+                Text(
+                    text = "${viewModel.pickerState.toInt()} days a week",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
 }
