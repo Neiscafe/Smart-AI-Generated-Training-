@@ -1,4 +1,4 @@
-package com.example.smart_development.feature_training_session.domain.model.training_types
+package com.example.smart_development.feature_training_session.domain.usecases
 
 import androidx.annotation.DrawableRes
 import com.example.smart_development.R

@@ -22,10 +22,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingType
+import com.example.smart_development.feature_training_session.domain.usecases.TrainingType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,11 +43,11 @@ fun TrainingTab(
         Modifier.fillMaxWidth()
     }
 
-    Card(modifier = cardModifier, border = BorderStroke(
-        width = 3.dp, color = Color.Black
-    ), shape = RoundedCornerShape(30.dp), onClick = {
-        onClick()
-    }) {
+    Card(
+        modifier = cardModifier, border = BorderStroke(
+            width = 3.dp, color = Color.Black
+        ), shape = RoundedCornerShape(30.dp), onClick = onClick
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()

@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.smart_development.feature_training_session.domain.model.training_types.TrainingType
+import com.example.smart_development.feature_training_session.domain.usecases.TrainingType
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
 import com.example.smart_development.feature_training_session.domain.usecases.TypeRadioButtonState
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
@@ -72,25 +72,27 @@ fun NewTrainingScreen(
                     Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
-                TrainingTab(trainingType = TrainingType.STRENGTH, onClick = {
-                    viewModel.onEvent(
-                        NewTrainingScreenEvent.TrainingTypeClicked(
-                            TrainingType.STRENGTH
+                Column {
+                    TrainingTab(trainingType = TrainingType.STRENGTH, onClick = {
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.TrainingTypeClicked(
+                                TrainingType.STRENGTH
+                            )
                         )
-                    )
-                }, onValueChange = { viewModel.strengthTrainingSelectedState })
-                TrainingTab(trainingType = TrainingType.HYPERTROPHY, onClick = {
-                    viewModel.onEvent(
-                        NewTrainingScreenEvent.TrainingTypeClicked(TrainingType.HYPERTROPHY)
-                    )
-                }, onValueChange = { viewModel.hypertrophyTrainingSelectedState })
-                TrainingTab(trainingType = TrainingType.RESISTANCE, onClick = {
-                    viewModel.onEvent(
-                        NewTrainingScreenEvent.TrainingTypeClicked(
-                            TrainingType.RESISTANCE
+                    }, onValueChange = { viewModel.strengthTrainingSelectedState })
+                    TrainingTab(trainingType = TrainingType.HYPERTROPHY, onClick = {
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.TrainingTypeClicked(TrainingType.HYPERTROPHY)
                         )
-                    )
-                }, onValueChange = { viewModel.resistanceTrainingSelectedState })
+                    }, onValueChange = { viewModel.hypertrophyTrainingSelectedState })
+                    TrainingTab(trainingType = TrainingType.RESISTANCE, onClick = {
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.TrainingTypeClicked(
+                                TrainingType.RESISTANCE
+                            )
+                        )
+                    }, onValueChange = { viewModel.resistanceTrainingSelectedState })
+                }
                 Text(
                     text = "Where will you be training?",
                     Modifier.fillMaxWidth(),
@@ -128,9 +130,9 @@ fun NewTrainingScreen(
                     viewModel.onEvent(
                         NewTrainingScreenEvent.PickerTextChanged(newValue)
                     )
-                }, valueRange = 1f..7f, steps = 5)
+                }, valueRange = 10f..70f, steps = 5)
                 Text(
-                    text = "${viewModel.pickerState.toInt()} days a week",
+                    text = "${viewModel.pickerState.toInt() / 10} days a week",
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
