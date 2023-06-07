@@ -25,8 +25,11 @@ class NewTrainingSessionViewModel(
 
     private var promptState by mutableStateOf("")
     var currentlySelectedTrainingPlace: TrainingPlace? by mutableStateOf(null)
+        private set
     var currentlySelectedTrainingDays by mutableStateOf(40f)
+        private set
     var currentlySelectedTrainingType: TrainingType? by mutableStateOf(null)
+        private set
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -38,7 +41,8 @@ class NewTrainingSessionViewModel(
             }
 
             is NewTrainingScreenEvent.DoneButtonClicked -> {
-                viewModelScope.launch {
+
+//                viewModelScope.launch {
 //                    if (promptState.isBlank()) {
 //                        return@launch
 //                    }
@@ -52,9 +56,8 @@ class NewTrainingSessionViewModel(
 //                    }
 //                    sendUiEvent(UiEvent.PopBackStack)
 //                    when()
-                    println("a")
+//                }
 
-                }
             }
 
             is NewTrainingScreenEvent.TrainingPlaceClicked -> {
@@ -68,8 +71,6 @@ class NewTrainingSessionViewModel(
             is NewTrainingScreenEvent.TrainingTypeClicked -> {
                 currentlySelectedTrainingType = event.trainingType
             }
-
-            else -> {}
         }
     }
 
