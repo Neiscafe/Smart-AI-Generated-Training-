@@ -29,13 +29,11 @@ import com.example.smart_development.feature_training_session.domain.usecases.Tr
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrainingTab(
-    trainingType: TrainingType, onClick: () -> Unit, onValueChange: () -> Boolean
+    trainingType: TrainingType, onClick: () -> Unit, selected: Boolean
 ) {
     val brush = Brush.horizontalGradient(listOf(Color.Black, Color.Transparent))
 
-    var cardModifier = Modifier.fillMaxWidth()
-
-    cardModifier = if (onValueChange()) {
+    val cardModifier = if (selected) {
         Modifier
             .fillMaxWidth()
             .background(color = Color.Gray)

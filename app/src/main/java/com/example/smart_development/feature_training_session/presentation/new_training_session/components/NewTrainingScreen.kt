@@ -11,7 +11,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
@@ -24,11 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.smart_development.feature_training_session.domain.usecases.TrainingType
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
-import com.example.smart_development.feature_training_session.domain.usecases.TypeRadioButtonState
+import com.example.smart_development.feature_training_session.domain.usecases.TrainingPlace
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import com.example.smart_development.feature_training_session.presentation.new_training_session.NewTrainingSessionViewModel
 import org.koin.androidx.compose.koinViewModel
 
+const val TAG = ("NewTrainingScreen")
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +37,9 @@ fun NewTrainingScreen(
     onPopBackStack: () -> Unit = {},
     onCreateToast: (String) -> Unit = {}
 ) {
+    val trainingTypeList =
+        listOf(TrainingType.STRENGTH, TrainingType.HYPERTROPHY, TrainingType.RESISTANCE)
+    val trainingPlaceList = listOf(TrainingPlace.HOME_SELECTED, TrainingPlace.GYM_SELECTED)
 
     LaunchedEffect(key1 = true) {
         viewModel.uiEvent.collect { event ->
@@ -73,25 +76,17 @@ fun NewTrainingScreen(
                     textAlign = TextAlign.Center
                 )
                 Column {
-                    TrainingTab(trainingType = TrainingType.STRENGTH, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.TrainingTypeClicked(
-                                TrainingType.STRENGTH
-                            )
+                    for (trainingType in trainingTypeList) {
+                        TrainingTab(
+                            trainingType = trainingType, onClick = {
+                                viewModel.onEvent(
+                                    NewTrainingScreenEvent.TrainingTypeClicked(
+                                        trainingType
+                                    )
+                                )
+                            }, selected = viewModel.currentlySelectedTrainingType == trainingType
                         )
-                    }, onValueChange = { viewModel.strengthTrainingSelectedState })
-                    TrainingTab(trainingType = TrainingType.HYPERTROPHY, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.TrainingTypeClicked(TrainingType.HYPERTROPHY)
-                        )
-                    }, onValueChange = { viewModel.hypertrophyTrainingSelectedState })
-                    TrainingTab(trainingType = TrainingType.RESISTANCE, onClick = {
-                        viewModel.onEvent(
-                            NewTrainingScreenEvent.TrainingTypeClicked(
-                                TrainingType.RESISTANCE
-                            )
-                        )
-                    }, onValueChange = { viewModel.resistanceTrainingSelectedState })
+                    }
                 }
                 Text(
                     text = "Where will you be training?",
@@ -103,20 +98,32 @@ fun NewTrainingScreen(
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(selected = viewModel.homeRadioButtonSelectedState, onClick = {
-                            viewModel.onEvent(
-                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.HOME_SELECTED)
+                        for (trainingPlace in trainingPlaceList) {
+                            TrainingRadioButton(
+                                type = trainingPlace,
+                                selected = viewModel.currentlySelectedTrainingPlace==trainingPlace,
+                                onClick = {
+                                    viewModel.onEvent(
+                                        NewTrainingScreenEvent.TrainingPlaceClicked(trainingPlace)
+                                    )
+                                }
                             )
-                        })
-                        Text(text = "Home", modifier = Modifier)
-                    }
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        RadioButton(selected = viewModel.gymRadioButtonSelectedState, onClick = {
-                            viewModel.onEvent(
-                                NewTrainingScreenEvent.RadioButtonPressed(TypeRadioButtonState.GYM_SELECTED)
-                            )
-                        })
-                        Text(text = "Gym", modifier = Modifier)
+                        }
+
+//                        RadioButton(selected = viewModel.homeRadioButtonSelectedState, onClick = {
+//                            viewModel.onEvent(
+//                                NewTrainingScreenEvent.RadioButtonPressed(TrainingPlace.HOME_SELECTED)
+//                            )
+//                        })
+//                        Text(text = "Home", modifier = Modifier)
+//                    }
+//                    Row(verticalAlignment = Alignment.CenterVertically) {
+//                        RadioButton(selected = viewModel.gymRadioButtonSelectedState, onClick = {
+//                            viewModel.onEvent(
+//                                NewTrainingScreenEvent.RadioButtonPressed(TrainingPlace.GYM_SELECTED)
+//                            )
+//                        })
+//                        Text(text = "Gym", modifier = Modifier)
                     }
                 }
                 Text(

@@ -1,18 +1,14 @@
 package com.example.smart_development.feature_training_session.presentation.new_training_session
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.smart_development.feature_training_session.domain.model.Training
-import com.example.smart_development.feature_training_session.domain.usecases.TrainingType
 import com.example.smart_development.feature_training_session.domain.repository.CreateTraining
 import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenEvent
-import com.example.smart_development.feature_training_session.domain.usecases.NewTrainingScreenState
-import com.example.smart_development.feature_training_session.domain.usecases.TypeRadioButtonState
+import com.example.smart_development.feature_training_session.domain.usecases.TrainingType
+import com.example.smart_development.feature_training_session.domain.usecases.TrainingPlace
 import com.example.smart_development.feature_training_session.domain.usecases.UiEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -21,29 +17,16 @@ import kotlinx.coroutines.launch
 const val STRENGTH = "STRENGTH"
 const val RESISTANCE = "RESISTANCE"
 const val HYPERTROPHY = "HYPERTROPHY"
+const val TAG = "NewTrainingSessionViewModel"
 
 class NewTrainingSessionViewModel(
     private val createTraining: CreateTraining
 ) : ViewModel() {
 
-
-    var promptState by mutableStateOf("")
-        private set
-    var homeRadioButtonSelectedState by mutableStateOf(false)
-        private set
-    var gymRadioButtonSelectedState by mutableStateOf(false)
-        private set
+    private var promptState by mutableStateOf("")
+    var currentlySelectedTrainingPlace: TrainingPlace? by mutableStateOf(null)
     var pickerState by mutableStateOf(40f)
-        private set
-    var strengthTrainingSelectedState by mutableStateOf(false)
-        private set
-    var resistanceTrainingSelectedState by mutableStateOf(false)
-        private set
-    var hypertrophyTrainingSelectedState by mutableStateOf(false)
-        private set
-
-//    private val _trainingState = mutableStateOf(NewTrainingScreenState())
-//    val trainingState: State<NewTrainingScreenState> = _trainingState
+    var currentlySelectedTrainingType: TrainingType? by mutableStateOf(null)
 
     private val _uiEvent = Channel<UiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
@@ -69,23 +52,13 @@ class NewTrainingSessionViewModel(
 //                    }
 //                    sendUiEvent(UiEvent.PopBackStack)
 //                    when()
-
+                    println("a")
 
                 }
             }
 
-            is NewTrainingScreenEvent.RadioButtonPressed -> {
-                when (event.button) {
-                    TypeRadioButtonState.GYM_SELECTED -> {
-                        homeRadioButtonSelectedState = false
-                        gymRadioButtonSelectedState = true
-                    }
-
-                    TypeRadioButtonState.HOME_SELECTED -> {
-                        homeRadioButtonSelectedState = true
-                        gymRadioButtonSelectedState = false
-                    }
-                }
+            is NewTrainingScreenEvent.TrainingPlaceClicked -> {
+                currentlySelectedTrainingPlace = event.trainingPlace
             }
 
             is NewTrainingScreenEvent.PickerTextChanged -> {
@@ -93,26 +66,10 @@ class NewTrainingSessionViewModel(
             }
 
             is NewTrainingScreenEvent.TrainingTypeClicked -> {
-                when (event.trainingType) {
-                    TrainingType.STRENGTH -> {
-                        strengthTrainingSelectedState = true
-                        resistanceTrainingSelectedState = false
-                        hypertrophyTrainingSelectedState = false
-                    }
-
-                    TrainingType.RESISTANCE -> {
-                        resistanceTrainingSelectedState = true
-                        strengthTrainingSelectedState = false
-                        hypertrophyTrainingSelectedState = false
-                    }
-
-                    TrainingType.HYPERTROPHY -> {
-                        hypertrophyTrainingSelectedState = true
-                        resistanceTrainingSelectedState = false
-                        strengthTrainingSelectedState = false
-                    }
-                }
+                currentlySelectedTrainingType = event.trainingType
             }
+
+            else -> {}
         }
     }
 
