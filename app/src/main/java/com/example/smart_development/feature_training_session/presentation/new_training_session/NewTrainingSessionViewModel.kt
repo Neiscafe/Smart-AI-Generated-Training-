@@ -25,7 +25,7 @@ class NewTrainingSessionViewModel(
 
     private var promptState by mutableStateOf("")
     var currentlySelectedTrainingPlace: TrainingPlace? by mutableStateOf(null)
-    var pickerState by mutableStateOf(40f)
+    var currentlySelectedTrainingDays by mutableStateOf(40f)
     var currentlySelectedTrainingType: TrainingType? by mutableStateOf(null)
 
     private val _uiEvent = Channel<UiEvent>()
@@ -62,7 +62,7 @@ class NewTrainingSessionViewModel(
             }
 
             is NewTrainingScreenEvent.PickerTextChanged -> {
-                pickerState = event.days
+                currentlySelectedTrainingDays = event.days
             }
 
             is NewTrainingScreenEvent.TrainingTypeClicked -> {

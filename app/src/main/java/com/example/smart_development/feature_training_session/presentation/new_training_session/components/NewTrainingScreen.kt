@@ -12,7 +12,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -99,31 +98,14 @@ fun NewTrainingScreen(
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         for (trainingPlace in trainingPlaceList) {
-                            TrainingRadioButton(
-                                type = trainingPlace,
-                                selected = viewModel.currentlySelectedTrainingPlace==trainingPlace,
+                            TrainingRadioButton(type = trainingPlace,
+                                selected = viewModel.currentlySelectedTrainingPlace == trainingPlace,
                                 onClick = {
                                     viewModel.onEvent(
                                         NewTrainingScreenEvent.TrainingPlaceClicked(trainingPlace)
                                     )
-                                }
-                            )
+                                })
                         }
-
-//                        RadioButton(selected = viewModel.homeRadioButtonSelectedState, onClick = {
-//                            viewModel.onEvent(
-//                                NewTrainingScreenEvent.RadioButtonPressed(TrainingPlace.HOME_SELECTED)
-//                            )
-//                        })
-//                        Text(text = "Home", modifier = Modifier)
-//                    }
-//                    Row(verticalAlignment = Alignment.CenterVertically) {
-//                        RadioButton(selected = viewModel.gymRadioButtonSelectedState, onClick = {
-//                            viewModel.onEvent(
-//                                NewTrainingScreenEvent.RadioButtonPressed(TrainingPlace.GYM_SELECTED)
-//                            )
-//                        })
-//                        Text(text = "Gym", modifier = Modifier)
                     }
                 }
                 Text(
@@ -133,15 +115,12 @@ fun NewTrainingScreen(
                         .padding(bottom = 16.dp),
                     textAlign = TextAlign.Center
                 )
-                Slider(value = viewModel.pickerState, onValueChange = { newValue ->
-                    viewModel.onEvent(
-                        NewTrainingScreenEvent.PickerTextChanged(newValue)
-                    )
-                }, valueRange = 10f..70f, steps = 5)
-                Text(
-                    text = "${viewModel.pickerState.toInt() / 10} days a week",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                TrainingDaysSlider(
+                    value = viewModel.currentlySelectedTrainingDays, onValueChange = { newValue ->
+                        viewModel.onEvent(
+                            NewTrainingScreenEvent.PickerTextChanged(newValue)
+                        )
+                    }, textValue = viewModel.currentlySelectedTrainingDays.toInt() / 10
                 )
             }
         }
